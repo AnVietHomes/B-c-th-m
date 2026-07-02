@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bốc Thăm An Viet Homes</title>
+    <style>
+        /* RESET & CƠ BẢN */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body, html { height: 100%; overflow: hidden; background-color: #000; }
+
+        /* SCROLL SNAP (KÉO CUỘN BẮT DÍNH) */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+        section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* HÌNH NỀN (Thay đường dẫn ảnh của bạn vào đây) */
+        #section1 { background-image: url('back1.png'); background-color: #0d47a1; } /* Màu dự phòng */
+        #section2, #section3 { background-image: url('back2.png'); background-color: #0277bd; }
+
+        /* TIÊU ĐỀ SECTION */
+        .section-title {
+            color: #fff;
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 15vh; /* Căn xuống dưới logo ở nền */
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* LƯỚI CẶP ĐẤU */
+        .match-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px 60px;
+            width: 90%;
+            max-width: 1200px;
+        }
+        /* Tùy chỉnh layout cho Section 2 (5 cặp) và Section 3 (4 cặp) */
+        #section2 .match-grid { max-width: 1400px; }
+
+        /* Ô CẶP ĐẤU */
+        .matchup-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 10px;
+        }
+        .matchup-label {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .matchup-boxes {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .team-box {
+            background: #fff;
+            border-radius: 8px;
+            width: 160px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 5px;
+        }
+        .team-box .team-name { font-weight: bold; font-size: 16px; color: #333; margin-bottom: 5px;}
+        .team-box .team-members { font-size: 12px; color: #666; line-height: 1.2;}
+        .vs-text { color: #00e5ff; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);}
+
+        /* NÚT BỐC THĂM */
+        .btn-draw {
+            position: absolute;
+            bottom: 50px;
+            background: linear-gradient(135deg, #00e5ff, #00b4d8);
+            border: none;
+            padding: 15px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-draw:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 229, 255, 0.6);
+        }
+        .btn-draw:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none;}
+
+        /* HIỆU ỨNG LÓE SÁNG (FLASH) */
+        @keyframes flashWinner {
+            0% { box-shadow: 0 0 0px transparent; transform: scale(1); }
+            50% { box-shadow: 0 0 40px #00e5ff; transform: scale(1.1); background-color: rgba(0, 229, 255, 0.1); }
+            100% { box-shadow: 0 0 15px #00e5ff; transform: scale(1); background-color: transparent; }
+        }
+        .highlight-match {
+            animation: flashWinner 1.5s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="scroll-container">
+    <section id="section1">
+        </section>
+
+    <section id="section2">
+        <div class="section-title">GIẢI BILLIARD - ĐẤU ĐÔI</div>
+        <div class="match-grid" id="billiard-grid">
+            </div>
+        <button class="btn-draw" onclick="drawMatch('billiard')">BỐC THĂM</button>
+    </section>
+
+    <section id="section3">
+        <div class="section-title">GIẢI PICKLEBALL - ĐÔI NAM NỮ</div>
+        <div class="match-grid" id="pickleball-grid">
+            </div>
+        <button class="btn-draw" onclick="drawMatch('pickleball')">BỐC THĂM</button>
+    </section>
+</div>
+
+<script>
+    // URL Web App của Google Apps Script (Thay link của bạn vào đây)
+    const SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE"; 
+
+    // Dữ liệu nội bộ xử lý
+    let dataPool = {
+        billiard: [],
+        pickleball: []
+    };
+
+    let currentMatchIndex = {
+        billiard: 1,
+        pickleball: 1
+    };
+
+    const maxMatches = { billiard: 5, pickleball: 4 };
+
+    // Sinh giao diện các ô bốc thăm
+    function initGrid(type, count) {
+        const grid = document.getElementById(`${type}-grid`);
+        let html = '';
+        for(let i = 1; i <= count; i++) {
+            html += `
+            <div class="matchup-wrapper" id="${type}-match-${i}">
+                <div class="matchup-label">CẶP ĐẤU SỐ ${i}</div>
+                <div class="matchup-boxes">
+                    <div class="team-box" id="${type}-match-${i}-team1">
+                        <div class="team-name">ĐỘI...</div>
+                        <div class="team-members">Thành viên 1<br>Thành viên 2</div>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="team-box" id="${type}-match-${i}-team2">
+                        <div class="team-name">ĐỘI...</div>
+                        <div class="team-members">Thành viên 1<br>Thành viên 2</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    initGrid('billiard', maxMatches.billiard);
+    initGrid('pickleball', maxMatches.pickleball);
+
+    // --- DỮ LIỆU MẪU ĐỂ TEST (Mock Data) ---
+    function loadMockData() {
+        for(let i = 1; i <= 20; i++) {
+            dataPool.billiard.push({ 'Nhóm số': `Đội ${i}`, 'Thành viên': `Nguyễn Văn A${i}<br>Trần Thị B${i}` });
+            dataPool.pickleball.push({ 'Nhóm số': `Đội ${i}`, 'Thành viên': `Lê Văn C${i}<br>Phạm Thị D${i}` });
+        }
+    }
+    loadMockData(); // Xóa dòng này khi bạn đã nối API Google Sheet thành công
+
+    // Hàm gọi API thực tế (bỏ comment khi dùng thật)
+    /*
+    async function fetchData(sheetName, type) {
+        try {
+            let res = await fetch(SCRIPT_URL + "?sheet=" + sheetName);
+            let data = await res.json();
+            dataPool[type] = data;
+        } catch (err) {
+            console.error("Lỗi tải dữ liệu", err);
+        }
+    }
+    // Chạy khi load trang
+    // fetchData("Billiard", "billiard");
+    // fetchData("Pickleball", "pickleball");
+    */
+
+    let isDrawing = false;
+
+    // Hàm bốc thăm
+    function drawMatch(type) {
+        if (isDrawing) return;
+        
+        let matchIdx = currentMatchIndex[type];
+        if (matchIdx > maxMatches[type]) {
+            alert("Đã bốc thăm hết các cặp đấu trong danh sách!");
+            return;
+        }
+
+        if (dataPool[type].length < 2) {
+            alert("Không đủ số lượng đội trong danh sách để tạo cặp đấu!");
+            return;
+        }
+
+        isDrawing = true;
+        let targetWrapper = document.getElementById(`${type}-match-${matchIdx}`);
+        let box1 = document.getElementById(`${type}-match-${matchIdx}-team1`);
+        let box2 = document.getElementById(`${type}-match-${matchIdx}-team2`);
+
+        let spinCount = 0;
+        let maxSpins = 20; // Số lần chớp tên trước khi dừng (khoảng 2 giây)
+        
+        // Hiệu ứng Spin text
+        let spinInterval = setInterval(() => {
+            // Random giả trong lúc quay
+            let randomT1 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
+            let randomT2 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
+            
+            box1.innerHTML = `<div class="team-name">${randomT1['Nhóm số']}</div><div class="team-members">${randomT1['Thành viên']}</div>`;
+            box2.innerHTML = `<div class="team-name">${randomT2['Nhóm số']}</div><div class="team-members">${randomT2['Thành viên']}</div>`;
+            
+            spinCount++;
+            
+            // Khi dừng quay
+            if (spinCount >= maxSpins) {
+                clearInterval(spinInterval);
+                
+                // Pick ngẫu nhiên 2 đội thật và xóa khỏi mảng
+                let index1 = Math.floor(Math.random() * dataPool[type].length);
+                let team1 = dataPool[type].splice(index1, 1)[0];
+                
+                let index2 = Math.floor(Math.random() * dataPool[type].length);
+                let team2 = dataPool[type].splice(index2, 1)[0];
+                
+                // Hiển thị kết quả chính thức
+                box1.innerHTML = `<div class="team-name">${team1['Nhóm số']}</div><div class="team-members">${team1['Thành viên']}</div>`;
+                box2.innerHTML = `<div class="team-name">${team2['Nhóm số']}</div><div class="team-members">${team2['Thành viên']}</div>`;
+                
+                // Kích hoạt hiệu ứng lóe sáng (flash)
+                targetWrapper.classList.add('highlight-match');
+                
+                currentMatchIndex[type]++;
+                isDrawing = false;
+            }
+        }, 100); // Tốc độ chớp đổi tên (100ms)
+    }
+</script>
+</body>
+</html>
