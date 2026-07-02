@@ -4,18 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bốc Thăm An Viet Homes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* RESET & CƠ BẢN */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        /* RESET & FONT MANROPE */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body, html { height: 100%; overflow: hidden; background-color: #000; }
 
-        /* SCROLL SNAP (KÉO CUỘN BẮT DÍNH) */
+        /* SCROLL SNAP & ẨN THANH CUỘN */
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
+            /* Ẩn thanh cuộn trên Firefox */
+            scrollbar-width: none; 
+            /* Ẩn thanh cuộn trên IE/Edge */
+            -ms-overflow-style: none; 
         }
+        /* Ẩn thanh cuộn trên Chrome/Safari/Opera */
+        .scroll-container::-webkit-scrollbar {
+            display: none; 
+        }
+
         section {
             height: 100vh;
             width: 100%;
@@ -26,22 +39,32 @@
             background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
 
-        /* HÌNH NỀN (Thay đường dẫn ảnh của bạn vào đây) */
-        #section1 { background-image: url('back1.png'); background-color: #0d47a1; } /* Màu dự phòng */
+        #section1 { background-image: url('back1.png'); background-color: #0d47a1; }
         #section2, #section3 { background-image: url('back2.png'); background-color: #0277bd; }
+
+        /* KHỐI BỌC NỘI DUNG ĐỂ CĂN GIỮA MÀN HÌNH */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Căn giữa theo chiều dọc */
+            flex: 1; /* Chiếm toàn bộ khoảng trống */
+            width: 100%;
+            padding-top: 10vh; /* Đẩy lùi xuống để tránh đè vào 3 logo ở nền */
+            padding-bottom: 120px; /* Chừa khoảng trống cho nút bốc thăm ở dưới */
+        }
 
         /* TIÊU ĐỀ SECTION */
         .section-title {
             color: #fff;
             font-size: 32px;
-            font-weight: bold;
-            margin-top: 15vh; /* Căn xuống dưới logo ở nền */
+            font-weight: 800;
             margin-bottom: 40px;
             text-transform: uppercase;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
         }
 
         /* LƯỚI CẶP ĐẤU */
@@ -49,36 +72,44 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px 60px;
-            width: 90%;
-            max-width: 1200px;
+            gap: 20px 40px;
+            width: 95%;
+            max-width: 1300px;
         }
-        /* Tùy chỉnh layout cho Section 2 (5 cặp) và Section 3 (4 cặp) */
-        #section2 .match-grid { max-width: 1400px; }
 
-        /* Ô CẶP ĐẤU */
+        /* Ô CẶP ĐẤU (Styling giống ảnh 1 của bạn) */
         .matchup-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: all 0.3s ease;
+            padding: 15px 20px;
             border-radius: 12px;
-            padding: 10px;
+            /* Tạo viền sáng và nền trong suốt giống ảnh 1 */
+            background: rgba(0, 100, 150, 0.2);
+            border: 2px solid rgba(0, 229, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1), 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
         }
+        
         .matchup-label {
             color: #fff;
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
         }
+        
         .matchup-boxes {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+        
         .team-box {
             background: #fff;
             border-radius: 8px;
-            width: 160px;
+            width: 170px;
             height: 80px;
             display: flex;
             flex-direction: column;
@@ -88,36 +119,40 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             padding: 5px;
         }
-        .team-box .team-name { font-weight: bold; font-size: 16px; color: #333; margin-bottom: 5px;}
-        .team-box .team-members { font-size: 12px; color: #666; line-height: 1.2;}
-        .vs-text { color: #00e5ff; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);}
+        
+        .team-box .team-name { font-weight: 800; font-size: 16px; color: #333; margin-bottom: 5px;}
+        .team-box .team-members { font-size: 11px; color: #555; line-height: 1.3; font-weight: 600;}
+        .vs-text { color: #00e5ff; font-weight: 800; font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);}
 
         /* NÚT BỐC THĂM */
         .btn-draw {
             position: absolute;
-            bottom: 50px;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
             background: linear-gradient(135deg, #00e5ff, #00b4d8);
             border: none;
-            padding: 15px 50px;
+            padding: 15px 60px;
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 800;
             color: #000;
-            border-radius: 30px;
+            border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.5);
+            transition: all 0.2s;
+            font-family: 'Manrope', sans-serif;
         }
         .btn-draw:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 229, 255, 0.6);
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 229, 255, 0.7);
         }
-        .btn-draw:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none;}
+        .btn-draw:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: translateX(-50%);}
 
-        /* HIỆU ỨNG LÓE SÁNG (FLASH) */
+        /* HIỆU ỨNG LÓE SÁNG KHI CHỐT KẾT QUẢ */
         @keyframes flashWinner {
-            0% { box-shadow: 0 0 0px transparent; transform: scale(1); }
-            50% { box-shadow: 0 0 40px #00e5ff; transform: scale(1.1); background-color: rgba(0, 229, 255, 0.1); }
-            100% { box-shadow: 0 0 15px #00e5ff; transform: scale(1); background-color: transparent; }
+            0% { box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1); transform: scale(1); border-color: rgba(0, 229, 255, 0.3);}
+            50% { box-shadow: 0 0 50px #00e5ff, inset 0 0 30px #00e5ff; transform: scale(1.05); border-color: #00e5ff; background: rgba(0, 229, 255, 0.3);}
+            100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), inset 0 0 20px rgba(0, 229, 255, 0.2); transform: scale(1); border-color: #00e5ff;}
         }
         .highlight-match {
             animation: flashWinner 1.5s ease-out forwards;
@@ -129,41 +164,36 @@
 
 <div class="scroll-container">
     <section id="section1">
-        </section>
+    </section>
 
     <section id="section2">
-        <div class="section-title">GIẢI BILLIARD - ĐẤU ĐÔI</div>
-        <div class="match-grid" id="billiard-grid">
-            </div>
+        <div class="content-wrapper">
+            <div class="section-title">GIẢI BILLIARD - ĐẤU ĐÔI</div>
+            <div class="match-grid" id="billiard-grid">
+                </div>
+        </div>
         <button class="btn-draw" onclick="drawMatch('billiard')">BỐC THĂM</button>
     </section>
 
     <section id="section3">
-        <div class="section-title">GIẢI PICKLEBALL - ĐÔI NAM NỮ</div>
-        <div class="match-grid" id="pickleball-grid">
-            </div>
+        <div class="content-wrapper">
+            <div class="section-title">GIẢI PICKLEBALL - ĐÔI NAM NỮ</div>
+            <div class="match-grid" id="pickleball-grid">
+                </div>
+        </div>
         <button class="btn-draw" onclick="drawMatch('pickleball')">BỐC THĂM</button>
     </section>
 </div>
 
 <script>
-    // URL Web App của Google Apps Script (Thay link của bạn vào đây)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQ911fuDdhC4Eur8tz1XG48o6-8L4C39EUgQt26SHOEkQwLqF4X0Ps0Sf4ChXfc_dh/exec"; 
+    // URL Web App của Google Apps Script
+    const SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE"; 
 
-    // Dữ liệu nội bộ xử lý
-    let dataPool = {
-        billiard: [],
-        pickleball: []
-    };
-
-    let currentMatchIndex = {
-        billiard: 1,
-        pickleball: 1
-    };
-
+    let dataPool = { billiard: [], pickleball: [] };
+    let currentMatchIndex = { billiard: 1, pickleball: 1 };
     const maxMatches = { billiard: 5, pickleball: 4 };
 
-    // Sinh giao diện các ô bốc thăm
+    // Sinh giao diện
     function initGrid(type, count) {
         const grid = document.getElementById(`${type}-grid`);
         let html = '';
@@ -190,16 +220,16 @@
     initGrid('billiard', maxMatches.billiard);
     initGrid('pickleball', maxMatches.pickleball);
 
-    // --- DỮ LIỆU MẪU ĐỂ TEST (Mock Data) ---
+    // Mock Data chuẩn theo format ghép từ Backend (Để bạn test giao diện)
     function loadMockData() {
         for(let i = 1; i <= 20; i++) {
-            dataPool.billiard.push({ 'Nhóm số': `Đội ${i}`, 'Thành viên': `Nguyễn Văn A${i}<br>Trần Thị B${i}` });
-            dataPool.pickleball.push({ 'Nhóm số': `Đội ${i}`, 'Thành viên': `Lê Văn C${i}<br>Phạm Thị D${i}` });
+            dataPool.billiard.push({ 'Nhóm số': `ĐỘI ${i}`, 'Thành viên': `Nguyễn Thành Đạt - AV11<br>Nguyễn Tiến Hùng - AV11` });
+            dataPool.pickleball.push({ 'Nhóm số': `ĐỘI ${i}`, 'Thành viên': `Lê Văn C${i} - AV1<br>Phạm Thị D${i} - AV2` });
         }
     }
-    loadMockData(); // Xóa dòng này khi bạn đã nối API Google Sheet thành công
+    loadMockData(); // XÓA dòng này khi nối API thật
 
-    // Hàm gọi API thực tế (bỏ comment khi dùng thật)
+    // HÀM GỌI API THỰC TẾ (Bỏ comment để dùng thật)
     /*
     async function fetchData(sheetName, type) {
         try {
@@ -210,9 +240,8 @@
             console.error("Lỗi tải dữ liệu", err);
         }
     }
-    // Chạy khi load trang
-    // fetchData("Billiard", "billiard");
-    // fetchData("Pickleball", "pickleball");
+    fetchData("Billiard", "billiard");
+    fetchData("Pickleball", "pickleball");
     */
 
     let isDrawing = false;
@@ -226,7 +255,6 @@
             alert("Đã bốc thăm hết các cặp đấu trong danh sách!");
             return;
         }
-
         if (dataPool[type].length < 2) {
             alert("Không đủ số lượng đội trong danh sách để tạo cặp đấu!");
             return;
@@ -238,11 +266,9 @@
         let box2 = document.getElementById(`${type}-match-${matchIdx}-team2`);
 
         let spinCount = 0;
-        let maxSpins = 20; // Số lần chớp tên trước khi dừng (khoảng 2 giây)
+        let maxSpins = 20; 
         
-        // Hiệu ứng Spin text
         let spinInterval = setInterval(() => {
-            // Random giả trong lúc quay
             let randomT1 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
             let randomT2 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
             
@@ -251,28 +277,24 @@
             
             spinCount++;
             
-            // Khi dừng quay
             if (spinCount >= maxSpins) {
                 clearInterval(spinInterval);
                 
-                // Pick ngẫu nhiên 2 đội thật và xóa khỏi mảng
                 let index1 = Math.floor(Math.random() * dataPool[type].length);
                 let team1 = dataPool[type].splice(index1, 1)[0];
                 
                 let index2 = Math.floor(Math.random() * dataPool[type].length);
                 let team2 = dataPool[type].splice(index2, 1)[0];
                 
-                // Hiển thị kết quả chính thức
                 box1.innerHTML = `<div class="team-name">${team1['Nhóm số']}</div><div class="team-members">${team1['Thành viên']}</div>`;
                 box2.innerHTML = `<div class="team-name">${team2['Nhóm số']}</div><div class="team-members">${team2['Thành viên']}</div>`;
                 
-                // Kích hoạt hiệu ứng lóe sáng (flash)
                 targetWrapper.classList.add('highlight-match');
                 
                 currentMatchIndex[type]++;
                 isDrawing = false;
             }
-        }, 100); // Tốc độ chớp đổi tên (100ms)
+        }, 80); 
     }
 </script>
 </body>
