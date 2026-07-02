@@ -215,7 +215,7 @@
 
     // HÀM TỰ ĐỘNG GỌI LẤY DỮ LIỆU ĐỘNG TỪ GOOGLE SHEETS KHI MỞ TRANG WEB
     async function fetchData(sheetName, type) {
-        if(SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbwQ911fuDdhC4Eur8tz1XG48o6-8L4C39EUgQt26SHOEkQwLqF4X0Ps0Sf4ChXfc_dh/exec")) return;
+        if(SCRIPT_URL.includes("DÁN_LINK_WEB_APP")) return;
         try {
             let res = await fetch(SCRIPT_URL + "?sheet=" + sheetName);
             let data = await res.json();
