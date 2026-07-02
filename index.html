@@ -13,20 +13,17 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body, html { height: 100%; overflow: hidden; background-color: #000; }
 
-        /* SCROLL SNAP & ẨN THANH CUỘN */
+        /* SCROLL SNAP & HIDE SCROLLBAR */
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
-            /* Ẩn thanh cuộn trên Firefox */
-            scrollbar-width: none; 
-            /* Ẩn thanh cuộn trên IE/Edge */
-            -ms-overflow-style: none; 
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
         }
-        /* Ẩn thanh cuộn trên Chrome/Safari/Opera */
         .scroll-container::-webkit-scrollbar {
-            display: none; 
+            display: none; /* Chrome/Safari/Opera */
         }
 
         section {
@@ -44,16 +41,16 @@
         #section1 { background-image: url('back1.png'); background-color: #0d47a1; }
         #section2, #section3 { background-image: url('back2.png'); background-color: #0277bd; }
 
-        /* KHỐI BỌC NỘI DUNG ĐỂ CĂN GIỮA MÀN HÌNH */
+        /* KHỐI NỘI DUNG - ĐÃ DỊCH LÊN TRÊN ĐỂ CÂN ĐỐI KHÔNG GIAN */
         .content-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Căn giữa theo chiều dọc */
-            flex: 1; /* Chiếm toàn bộ khoảng trống */
+            justify-content: flex-start; /* Đẩy cụm lên trên thay vì center hẳn */
+            flex: 1;
             width: 100%;
-            padding-top: 10vh; /* Đẩy lùi xuống để tránh đè vào 3 logo ở nền */
-            padding-bottom: 120px; /* Chừa khoảng trống cho nút bốc thăm ở dưới */
+            padding-top: 21vh; /* Khoảng cách vừa vặn dưới Logo/Tiêu đề của ảnh nền */
+            padding-bottom: 20px;
         }
 
         /* TIÊU ĐỀ SECTION */
@@ -61,43 +58,44 @@
             color: #fff;
             font-size: 32px;
             font-weight: 800;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             text-transform: uppercase;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             letter-spacing: 1px;
         }
 
-        /* LƯỚI CẶP ĐẤU */
+        /* LƯỚI CẶP ĐẤU (Định dạng chiều rộng để tạo form 2-2-1 cho Billiard) */
         .match-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px 40px;
-            width: 95%;
-            max-width: 1300px;
+            gap: 15px 35px;
+            width: 100%;
+            max-width: 1000px; /* Độ rộng hoàn hảo cho layout 2 cặp mỗi hàng */
         }
 
-        /* Ô CẶP ĐẤU (Styling giống ảnh 1 của bạn) */
+        /* Ô CẶP ĐẤU STYLING */
         .matchup-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: all 0.3s ease;
-            padding: 15px 20px;
+            padding: 12px 20px;
             border-radius: 12px;
-            /* Tạo viền sáng và nền trong suốt giống ảnh 1 */
-            background: rgba(0, 100, 150, 0.2);
-            border: 2px solid rgba(0, 229, 255, 0.3);
-            box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1), 0 4px 15px rgba(0,0,0,0.2);
+            background: rgba(0, 90, 140, 0.15);
+            border: 2px solid rgba(0, 229, 255, 0.35);
+            box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1), 0 4px 15px rgba(0,0,0,0.2);
             backdrop-filter: blur(5px);
         }
         
         .matchup-label {
             color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.9;
         }
         
         .matchup-boxes {
@@ -109,8 +107,8 @@
         .team-box {
             background: #fff;
             border-radius: 8px;
-            width: 170px;
-            height: 80px;
+            width: 175px;
+            height: 75px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -120,27 +118,26 @@
             padding: 5px;
         }
         
-        .team-box .team-name { font-weight: 800; font-size: 16px; color: #333; margin-bottom: 5px;}
-        .team-box .team-members { font-size: 11px; color: #555; line-height: 1.3; font-weight: 600;}
-        .vs-text { color: #00e5ff; font-weight: 800; font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);}
+        .team-box .team-name { font-weight: 800; font-size: 15px; color: #111; margin-bottom: 3px;}
+        .team-box .team-members { font-size: 11px; color: #444; line-height: 1.3; font-weight: 600;}
+        .vs-text { color: #00e5ff; font-weight: 800; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);}
 
-        /* NÚT BỐC THĂM */
+        /* NÚT BỐC THĂM ĐẶT TRÊN NỀN CỎ */
         .btn-draw {
             position: absolute;
-            bottom: 60px;
+            bottom: 45px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #00e5ff, #00b4d8);
             border: none;
-            padding: 15px 60px;
-            font-size: 20px;
+            padding: 13px 65px;
+            font-size: 18px;
             font-weight: 800;
             color: #000;
             border-radius: 40px;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(0, 229, 255, 0.5);
             transition: all 0.2s;
-            font-family: 'Manrope', sans-serif;
         }
         .btn-draw:hover {
             transform: translateX(-50%) scale(1.05);
@@ -148,52 +145,45 @@
         }
         .btn-draw:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: translateX(-50%);}
 
-        /* HIỆU ỨNG LÓE SÁNG KHI CHỐT KẾT QUẢ */
+        /* HIỆU ỨNG LÓE SÁNG KHI TRÚNG GIẢI */
         @keyframes flashWinner {
-            0% { box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1); transform: scale(1); border-color: rgba(0, 229, 255, 0.3);}
-            50% { box-shadow: 0 0 50px #00e5ff, inset 0 0 30px #00e5ff; transform: scale(1.05); border-color: #00e5ff; background: rgba(0, 229, 255, 0.3);}
-            100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.6), inset 0 0 20px rgba(0, 229, 255, 0.2); transform: scale(1); border-color: #00e5ff;}
+            0% { box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); transform: scale(1); border-color: rgba(0, 229, 255, 0.35);}
+            50% { box-shadow: 0 0 45px #00e5ff, inset 0 0 25px #00e5ff; transform: scale(1.04); border-color: #00e5ff; background: rgba(0, 229, 255, 0.25);}
+            100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.5), inset 0 0 15px rgba(0, 229, 255, 0.2); transform: scale(1); border-color: #00e5ff;}
         }
         .highlight-match {
             animation: flashWinner 1.5s ease-out forwards;
         }
-
     </style>
 </head>
 <body>
 
 <div class="scroll-container">
-    <section id="section1">
-    </section>
+    <section id="section1"></section>
 
     <section id="section2">
         <div class="content-wrapper">
-            <div class="section-title">GIẢI BILLIARD - ĐẤU ĐÔI</div>
-            <div class="match-grid" id="billiard-grid">
-                </div>
+            <div class="section-title" style="display:none;">GIẢI BILLIARD - ĐẤU ĐÔI</div> <div class="match-grid" id="billiard-grid"></div>
         </div>
         <button class="btn-draw" onclick="drawMatch('billiard')">BỐC THĂM</button>
     </section>
 
     <section id="section3">
         <div class="content-wrapper">
-            <div class="section-title">GIẢI PICKLEBALL - ĐÔI NAM NỮ</div>
-            <div class="match-grid" id="pickleball-grid">
-                </div>
+            <div class="section-title" style="display:none;">GIẢI PICKLEBALL - ĐÔI NAM NỮ</div> <div class="match-grid" id="pickleball-grid"></div>
         </div>
         <button class="btn-draw" onclick="drawMatch('pickleball')">BỐC THĂM</button>
     </section>
 </div>
 
 <script>
-    // URL Web App của Google Apps Script
     const SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE"; 
 
     let dataPool = { billiard: [], pickleball: [] };
     let currentMatchIndex = { billiard: 1, pickleball: 1 };
     const maxMatches = { billiard: 5, pickleball: 4 };
 
-    // Sinh giao diện
+    // Khởi tạo các ô trống ban đầu chuẩn theo ảnh mẫu
     function initGrid(type, count) {
         const grid = document.getElementById(`${type}-grid`);
         let html = '';
@@ -203,13 +193,13 @@
                 <div class="matchup-label">CẶP ĐẤU SỐ ${i}</div>
                 <div class="matchup-boxes">
                     <div class="team-box" id="${type}-match-${i}-team1">
-                        <div class="team-name">ĐỘI...</div>
-                        <div class="team-members">Thành viên 1<br>Thành viên 2</div>
+                        <div class="team-name" style="color:#aaa;">ĐỘI...</div>
+                        <div class="team-members" style="color:#bbb;">Thành viên 1<br>Thành viên 2</div>
                     </div>
                     <div class="vs-text">VS</div>
                     <div class="team-box" id="${type}-match-${i}-team2">
-                        <div class="team-name">ĐỘI...</div>
-                        <div class="team-members">Thành viên 1<br>Thành viên 2</div>
+                        <div class="team-name" style="color:#aaa;">ĐỘI...</div>
+                        <div class="team-members" style="color:#bbb;">Thành viên 1<br>Thành viên 2</div>
                     </div>
                 </div>
             </div>`;
@@ -220,16 +210,39 @@
     initGrid('billiard', maxMatches.billiard);
     initGrid('pickleball', maxMatches.pickleball);
 
-    // Mock Data chuẩn theo format ghép từ Backend (Để bạn test giao diện)
+    // MOCK DATA CHUẨN XÁC THEO FILE EXCEL THỰC TẾ ĐỂ CHẠY TEST
     function loadMockData() {
-        for(let i = 1; i <= 20; i++) {
-            dataPool.billiard.push({ 'Nhóm số': `ĐỘI ${i}`, 'Thành viên': `Nguyễn Thành Đạt - AV11<br>Nguyễn Tiến Hùng - AV11` });
-            dataPool.pickleball.push({ 'Nhóm số': `ĐỘI ${i}`, 'Thành viên': `Lê Văn C${i} - AV1<br>Phạm Thị D${i} - AV2` });
-        }
-    }
-    loadMockData(); // XÓA dòng này khi nối API thật
+        const billiardRealData = [
+            { team: "ĐỘI 1", members: "Nguyễn Thành Đạt - AV11<br>Nguyễn Tiến Hùng - AV11" },
+            { team: "ĐỘI 2", members: "Trần Chí Bảo - AV9<br>Nguyễn Trọng Duy - AV9" },
+            { team: "ĐỘI 3", members: "Hoàng Phương Thảo - BLD<br>Nguyễn Ngọc Long - AV9" },
+            { team: "ĐỘI 4", members: "Phan Tiến Dũng - AV19<br>Nguyễn Xuân Toàn - LX" },
+            { team: "ĐỘI 5", members: "Đinh Thành Đạt - AV18<br>Lê Văn Tuấn - AV16" },
+            { team: "ĐỘI 6", members: "Trần Văn Hùng - AV11<br>Lê Đình Ngọc - BLD" },
+            { team: "ĐỘI 7", members: "Bùi Ngọc Sơn - AV5<br>Đỗ Thế Vinh - AV18" },
+            { team: "ĐỘI 8", members: "Nguyễn Anh Tuấn - AV3<br>Nguyễn Tiến Dũng - A1" },
+            { team: "ĐỘI 9", members: "Nguyễn Minh Hoàng - AV18<br>Phạm Sơn Tùng - AV18" },
+            { team: "ĐỘI 10", members: "Nguyễn Văn Tùng - AV8<br>Nguyễn Minh Hương - AV8" }
+        ];
 
-    // HÀM GỌI API THỰC TẾ (Bỏ comment để dùng thật)
+        const pickleballRealData = [
+            { team: "ĐỘI 1", members: "Phạm Văn Minh - AV2<br>Hoàng Thu Thủy - AV5" },
+            { team: "ĐỘI 2", members: "Đỗ Hoàng Long - AV12<br>Nguyễn Thị Mai - AV3" },
+            { team: "ĐỘI 3", members: "Nguyễn Hải Nam - AV6<br>Trần Thu Hà - AV11" },
+            { team: "ĐỘI 4", members: "Bùi Anh Đức - AV15<br>Lê Thị Hồng - BLD" },
+            { team: "ĐỘI 5", members: "Vũ Quốc Trung - AV8<br>Phạm Mai Phương - AV9" },
+            { team: "ĐỘI 6", members: "Nguyễn Đức Anh - LX<br>Đặng Thúy Quỳnh - AV1" },
+            { team: "ĐỘI 7", members: "Trần Đức Toàn - AV4<br>Nguyễn Thanh Vân - AV4" },
+            { team: "ĐỘI 8", members: "Lê Minh Triết - AV10<br>Bùi Phương Thảo - AV10" }
+        ];
+
+        billiardRealData.forEach(item => dataPool.billiard.push({ 'Nhóm số': item.team, 'Thành viên': item.members }));
+        pickleballRealData.forEach(item => dataPool.pickleball.push({ 'Nhóm số': item.team, 'Thành viên': item.members }));
+    }
+    
+    loadMockData(); // XÓA dòng này khi bạn bỏ comment cấu hình nối API Google Sheets thật bên dưới
+
+    // HÀM KẾT NỐI API GOOGLE SHEETS THỰC TẾ
     /*
     async function fetchData(sheetName, type) {
         try {
@@ -237,7 +250,7 @@
             let data = await res.json();
             dataPool[type] = data;
         } catch (err) {
-            console.error("Lỗi tải dữ liệu", err);
+            console.error("Lỗi tải dữ liệu từ Google Sheets: ", err);
         }
     }
     fetchData("Billiard", "billiard");
@@ -246,17 +259,16 @@
 
     let isDrawing = false;
 
-    // Hàm bốc thăm
     function drawMatch(type) {
         if (isDrawing) return;
         
         let matchIdx = currentMatchIndex[type];
         if (matchIdx > maxMatches[type]) {
-            alert("Đã bốc thăm hết các cặp đấu trong danh sách!");
+            alert("Đã bốc thăm hết các cặp đấu quy định!");
             return;
         }
         if (dataPool[type].length < 2) {
-            alert("Không đủ số lượng đội trong danh sách để tạo cặp đấu!");
+            alert("Danh sách đội còn lại không đủ để tạo cặp đấu (Cần tối thiểu 2 đội)!");
             return;
         }
 
@@ -269,6 +281,7 @@
         let maxSpins = 20; 
         
         let spinInterval = setInterval(() => {
+            // Hiệu ứng đổi chữ ngẫu nhiên liên tục tạo cảm giác quay số chuyên nghiệp
             let randomT1 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
             let randomT2 = dataPool[type][Math.floor(Math.random() * dataPool[type].length)];
             
@@ -280,15 +293,18 @@
             if (spinCount >= maxSpins) {
                 clearInterval(spinInterval);
                 
+                // Chọn ngẫu nhiên kết quả thật và loại bỏ khỏi mảng để không trùng lặp
                 let index1 = Math.floor(Math.random() * dataPool[type].length);
                 let team1 = dataPool[type].splice(index1, 1)[0];
                 
                 let index2 = Math.floor(Math.random() * dataPool[type].length);
                 let team2 = dataPool[type].splice(index2, 1)[0];
                 
+                // Xuất kết quả chính thức vào ô dữ liệu
                 box1.innerHTML = `<div class="team-name">${team1['Nhóm số']}</div><div class="team-members">${team1['Thành viên']}</div>`;
                 box2.innerHTML = `<div class="team-name">${team2['Nhóm số']}</div><div class="team-members">${team2['Thành viên']}</div>`;
                 
+                // Áp hiệu ứng lóe sáng vào ô cặp đấu vừa bốc xong
                 targetWrapper.classList.add('highlight-match');
                 
                 currentMatchIndex[type]++;
